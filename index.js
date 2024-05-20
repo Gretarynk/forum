@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
+import userRouter from "./src/routers/users.js";
 
 
 import cors from "cors"
@@ -14,6 +15,11 @@ mongoose
   .catch((err) => {
     console.log("err:", err);
   });
+
+app.use(userRouter);
+
+
+
   app.use((req, res)=>{
     return res.status(404).json({message:"This endpoint does not exist"})
   })
