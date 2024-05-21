@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./src/routers/users.js";
 import questionRouter from "./src/routers/questions.js"
+import answerRouter from "./src/routers/answers.js"
 
 
 import cors from "cors"
@@ -19,6 +20,7 @@ mongoose
 
 app.use(userRouter);
 app.use(questionRouter);
+app.use(answerRouter);
 
 
 
