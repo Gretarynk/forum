@@ -12,7 +12,7 @@ import jwt from "jsonwebtoken";
         }
     //  console.log('decoded token', decoded)
         req.body.userId=decoded.userId;
-        // console.log('user id',req.body.userId)
+        console.log('user id',req.body.userId)
         // req.user = decoded;
         //  console.log('requested user',req.user)
         return next();

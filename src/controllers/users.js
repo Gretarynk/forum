@@ -32,6 +32,8 @@ const SIGN_UP = async (req, res) => {
 
       ...req.body,
     });
+    console.log(user)
+    
     user.name = firstLetterCapital(user.name);
     user.password = hash;
     const response = await user.save();

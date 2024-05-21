@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./src/routers/users.js";
+import questionRouter from "./src/routers/questions.js"
 
 
 import cors from "cors"
@@ -17,6 +18,7 @@ mongoose
   });
 
 app.use(userRouter);
+app.use(questionRouter);
 
 
 
