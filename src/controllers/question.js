@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import QuestionModel from "../models/question.js";
 import UserModel from "../models/user.js";
+import { firstLetterCapital } from "../helpers/validators.js";
 
 const POST_CREATE_QUESTION = async (req, res) => {
   try {
@@ -9,8 +10,10 @@ const POST_CREATE_QUESTION = async (req, res) => {
       id: uuidv4(),
       question_title:req.body.question_title,
       question_text:req.body.question_text,
+      region:req.body.region,
     user_id:userId
     });
+    question.region=firstLetterCapital(question.region)
     const response = await question.save();
 
     await UserModel.findByIdAndUpdate(
@@ -55,6 +58,30 @@ const DELETE_QUESTION_BY_ID = async (req, res) => {
     return res.status(500).json({ message: "Error happened" });
   }
 };
+const GET_QUESTIONS_WITH_REGION = async (req, res) => {
+  try {
+    const region = req.params.region;
+    const questionsRegion = await QuestionModel.find({ region });
 
 
-export { POST_CREATE_QUESTION, GET_ALL_QUESTIONS, GET_QUESTION_BY_ID,DELETE_QUESTION_BY_ID };
+    if (!questionsRegion.length) {
+      return res
+        .status(404)
+        .json({
+          message: `There are no question for this region ${req.params.region}`,
+        });
+    }
+
+    return res.status(200).json({
+      message: `Question for region ${req.params.region} `,
+      questions: questionsRegion,
+    });
+  } catch (err) {
+    console.log("HANDLED ERROR:", err);
+    return res
+      .status(500)
+      .json({ message: "Error occurred while fetching region" });
+  }
+};
+
+export { POST_CREATE_QUESTION, GET_ALL_QUESTIONS, GET_QUESTION_BY_ID,DELETE_QUESTION_BY_ID, GET_QUESTIONS_WITH_REGION };

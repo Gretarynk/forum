@@ -37,8 +37,10 @@ const POST_CREATE_ANSWER = async (req, res) => {
   }
 };
 const GET_ALL_ANSWERS = async (req, res) => {
+  const questionId=req.params.id
+  console.log(questionId)
   try {
-    const answers = await AnswerModel.find().sort({ date: -1 });
+    const answers = await AnswerModel.find({question_id:questionId}).sort({ date: -1 });
     return res.status(200).json({ status: "Success", answers: answers });
   } catch (err) {
     console.log("HANDLED ERROR:", err);
