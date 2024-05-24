@@ -73,4 +73,60 @@ const DELETE_ANSWER_BY_ID = async (req, res) => {
   }
 };
 
-export { POST_CREATE_ANSWER, GET_ALL_ANSWERS, DELETE_ANSWER_BY_ID };
+const LIKE_ANSWER= async(req,res)=>{
+  try{
+    const userId = req.body.userId;
+
+    const answerId = req.params.id;
+    const answer = await AnswerModel.findOne({ id: answerId });
+    if (!answer) {
+      return res.status(404).json({ message: "Answer not found" });
+    }
+
+    if (answer.likes_number.includes(userId)) {
+      // User has already liked, remove like
+      answer.likes_number = answer.likes_number.filter(id => id !== userId);
+    } else {
+      // Add like
+      answer.likes_number.push(userId);
+      // Remove dislike if exists
+      answer.dislikes = answer.dislikes.filter(id => id !== userId);
+    }
+
+    await answer.save();
+    res.status(200).json({ message: "Answer liked", answer });
+
+  }catch (err) {
+    console.log("HANDLED ERROR:", err);
+    return res.status(500).json({ message: "Error happened" });
+  }
+};
+const DISLIKE_ANSWER= async(req,res)=>{
+  try{
+    const userId = req.body.userId;
+
+    const answerId = req.params.id;
+    const answer = await AnswerModel.findOne({ id: answerId });
+    if (!answer) {
+      return res.status(404).json({ message: "Answer not found" });
+    }
+
+    if (answer.dislikes.includes(userId)) {
+   
+      answer.dislikes = answer.dislikes.filter(id => id !== userId);
+    } else {
+      
+      answer.dislikes.push(userId);
+     
+      answer.likes_number = answer.likes_number.filter(id => id !== userId);
+    }
+
+    await answer.save();
+    res.status(200).json({ message: "Answer disliked", answer });
+
+  }catch (err) {
+    console.log("HANDLED ERROR:", err);
+    return res.status(500).json({ message: "Error happened" });
+  }
+};
+export { POST_CREATE_ANSWER, GET_ALL_ANSWERS, DELETE_ANSWER_BY_ID, LIKE_ANSWER,DISLIKE_ANSWER};

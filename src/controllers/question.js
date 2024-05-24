@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import QuestionModel from "../models/question.js";
 import UserModel from "../models/user.js";
-import { firstLetterCapital } from "../helpers/validators.js";
+
 
 const POST_CREATE_QUESTION = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ const POST_CREATE_QUESTION = async (req, res) => {
       region:req.body.region,
     user_id:userId
     });
-    question.region=firstLetterCapital(question.region)
+   
     const response = await question.save();
 
     await UserModel.findByIdAndUpdate(
@@ -32,7 +32,10 @@ const POST_CREATE_QUESTION = async (req, res) => {
 const GET_ALL_QUESTIONS = async (req, res) => {
   try {
       const questions= await QuestionModel.find().sort({date:-1});
-     return res.status(200).json({ status: "Success", questions: questions });
+      const questionWithReplyCount=questions.map(question=>({
+        ...question.toObject(),answers:question.answers.length
+      }))
+     return res.status(200).json({ status: "Success", questions: questionWithReplyCount });
   } catch (err) {
     console.log("HANDLED ERROR:", err);
     return res.status(500).json({ message: "Error happened" });
