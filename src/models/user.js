@@ -15,7 +15,9 @@ const userSchema=mongoose.Schema({
         required: true,
         min: 6,
       },
-      questions: [{ type: String }]
+      questions: [{ type: String }],
+      answers: [{ type: String }],
+      
 })
 
 
