@@ -22,22 +22,22 @@ const generateTokens = (userId, userEmail) => {
   return { jwt_token, refresh_token };
 };
 
-const verifyRefreshToken = (refresh_token) => {
-  try {
-    const decoded = jwt.verify(refresh_token, process.env.REFRESH_JWT_SECRET);
-    return decoded;
-  } catch (err) {
-    return null;
-  }
-};
+// const verifyRefreshToken = (refresh_token) => {
+//   try {
+//     const decoded = jwt.verify(refresh_token, process.env.REFRESH_JWT_SECRET);
+//     return decoded;
+//   } catch (err) {
+//     return null;
+//   }
+// };
 
-const refreshJwtToken = (refreshToken) => {
-  const decodedToken = verifyRefreshToken(refreshToken);
-  if (!decodedToken) {
-    return { error: "Expired or invalid refresh token" };
-  }
-  const { userId, userEmail } = decodedToken;
-  const { jwt_token, refresh_token } = generateTokens(userId, userEmail);
-  return { jwtToken: jwt_token, newRefreshToken: refresh_token };
-};
-export {generateTokens,verifyRefreshToken,refreshJwtToken}
+// const refreshJwtToken = (refreshToken) => {
+//   const decodedToken = verifyRefreshToken(refreshToken);
+//   if (!decodedToken) {
+//     return { error: "Expired or invalid refresh token" };
+//   }
+//   const { userId, userEmail } = decodedToken;
+//   const { jwt_token, refresh_token } = generateTokens(userId, userEmail);
+//   return { jwtToken: jwt_token, newRefreshToken: refresh_token };
+// };
+export {generateTokens}

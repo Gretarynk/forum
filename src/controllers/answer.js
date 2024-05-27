@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import QuestionModel from "../models/question.js";
-import UserModel from "../models/user.js";
+
 import AnswerModel from "../models/answer.js";
 
 const POST_CREATE_ANSWER = async (req, res) => {
@@ -41,6 +41,7 @@ const GET_ALL_ANSWERS = async (req, res) => {
   console.log(questionId)
   try {
     const answers = await AnswerModel.find({question_id:questionId}).sort({ date: 1 });
+    
     return res.status(200).json({ status: "Success", answers: answers });
   } catch (err) {
     console.log("HANDLED ERROR:", err);
