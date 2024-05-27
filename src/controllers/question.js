@@ -53,8 +53,15 @@ const GET_QUESTION_BY_ID = async (req, res) => {
 };
 const DELETE_QUESTION_BY_ID = async (req, res) => {
   try {
-      const deletedQuestion= await QuestionModel.findOneAndDelete({id:req.params.id});
-      if(!deletedQuestion){return res.status(401).json({ message:` Question not find with such id ${req.params.id}`, deletedQuestion })}
+    const userId = req.body.userId;
+    const questionId=req.params.id
+   
+    const question= await QuestionModel.findOne({id:questionId}) 
+    
+    if(!question){ return res.status(404).json({message:"question not find "})}
+    if (question.user_id.toString() !== userId){ return res.status(403).json({ message: "You are not authorized to delete this question" });}
+      const deletedQuestion= await question.deleteOne();
+      
      return res.status(200).json({ status: "Success", question: deletedQuestion });
   } catch (err) {
     console.log("HANDLED ERROR:", err);

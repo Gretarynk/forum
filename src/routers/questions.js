@@ -8,10 +8,11 @@ import {
   GET_QUESTIONS_WITH_REGION
 } from "../controllers/question.js";
 import validation from "../middleware/validation.js";
+import questionValidation from "../validationSchema/question.js"
 
 import { auth } from "../middleware/auth.js";
 
-router.post("/questions", auth, POST_CREATE_QUESTION);
+router.post("/questions",validation(questionValidation), auth, POST_CREATE_QUESTION);
 router.get("/questions", GET_ALL_QUESTIONS);
 router.get("/question/:id", GET_QUESTION_BY_ID);
 router.delete("/question/:id",auth, DELETE_QUESTION_BY_ID);
