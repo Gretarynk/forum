@@ -14,7 +14,7 @@ import { auth } from "../middleware/auth.js";
 
 router.post("/questions",validation(questionValidation), auth, POST_CREATE_QUESTION);
 router.get("/questions", GET_ALL_QUESTIONS);
-router.get("/question/:id", GET_QUESTION_BY_ID);
+router.get("/question/:id",auth, GET_QUESTION_BY_ID);
 router.delete("/question/:id",auth, DELETE_QUESTION_BY_ID);
 router.get("/questions/:region", GET_QUESTIONS_WITH_REGION);
 
